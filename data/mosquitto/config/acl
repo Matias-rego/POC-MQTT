@@ -1,0 +1,9 @@
+user admin
+topic readwrite #
+
+user dashboard
+topic read dispositivos/#
+
+pattern read dispositivos/%u/comandos
+pattern write dispositivos/%u/estado
+pattern write dispositivos/%u/sensores/#

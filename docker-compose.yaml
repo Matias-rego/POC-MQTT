@@ -1,0 +1,71 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: unless-stopped
+    user: "1000:1000"
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+    volumes:
+      - ./data/mosquitto:/mosquitto/
+    networks:
+      - poc-net
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-h", "localhost", "-t", "$SYS/broker/version", "-C", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 256M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+
+  mqttui:
+    container_name: mqttui
+    image: terdia07/mqttui:latest
+    ports:
+      - "8088:5000"
+    networks:
+      - poc-net
+    environment:
+      - DEBUG=False
+      - HOST=0.0.0.0
+      - PORT=5000
+      - MQTT_BROKER=mosquitto
+      - MQTT_PORT=1883
+      - MQTT_USERNAME=admin
+      - MQTT_PASSWORD=123456
+      - MQTT_KEEPALIVE=60
+      - MQTT_VERSION=3.1.1
+      - SECRET_KEY=mqttui-dev-secret-change-in-prod
+      - LOG_LEVEL=INFO
+      - MQTT_TOPICS=#
+      - DB_ENABLED=True
+      - DB_PATH=/app/data/mqtt_messages.db
+      - DB_MAX_MESSAGES=10000
+      - DB_CLEANUP_DAYS=30
+      - MQTTUI_ADMIN_USER=admin
+      - MQTTUI_ADMIN_PASSWORD=admin
+      - MQTTUI_RATE_LIMIT=30/minute
+    volumes:
+      - ./data/mqttui:/app/data
+    depends_on:
+      - mosquitto
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+        reservations:
+          cpus: "0.1"
+          memory: 64M
+
+networks:
+  poc-net:
+    name: poc-net
+    driver: bridge

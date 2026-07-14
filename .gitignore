@@ -141,3 +141,66 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# PlatformIO
+.pio/
+.piolibdeps/
+.clangd/
+
+# Build files
+build/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+
+# PlatformIO IDE
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+*~
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+
+# Secrets and credentials
+.env
+.env.*
+secrets.h
+credentials.h
+data/mosquitto/config/certs
+
+data/mosquitto/config/passwd
+
+# Local PlatformIO configuration
+platformio_override.ini
+
+.pio
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+
