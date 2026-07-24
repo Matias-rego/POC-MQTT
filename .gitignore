@@ -197,6 +197,9 @@ data/mosquitto/config/certs
 
 data/mosquitto/config/passwd
 
+# MQTT UI runtime data
+data/mqttui/
+
 # Local PlatformIO configuration
 platformio_override.ini
 
