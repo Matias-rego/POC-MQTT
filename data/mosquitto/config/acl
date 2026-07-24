@@ -1,6 +1,9 @@
 user admin
 topic readwrite #
 
+user react
+topic readwrite #
+
 user dashboard
 topic read dispositivos/#
 
