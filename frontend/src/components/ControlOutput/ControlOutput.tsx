@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 
 interface Props {
     topic: string;
+    label?: string;
 }
 
-const Switch = ({topic}: Props) => {
+const Switch = ({ topic, label }: Props) => {
     const { subscribe, unsubscribe, publish, connected } = useMqtt();
 
     const [isEnabled, setIsEnabled] = useState(false);
 
     useEffect(() => {
         const handler = (mensaje: string) => {
-
             setIsEnabled(mensaje === "ON");
         };
 
@@ -24,22 +24,28 @@ const Switch = ({topic}: Props) => {
     }, [topic, connected, subscribe, unsubscribe]);
 
     const sendState = (state: boolean) => {
-        publish(`${topic}/state`, state ? 'ON' : 'OFF');
+        publish(`${topic}/state`, state ? "ON" : "OFF");
     };
 
-
     return (
-        <>
-            <label>
+        <div className="control-row">
+            <div>
+                <div className="control-label">{label ?? topic}</div>
+                <div className="control-sub">{topic}/state</div>
+            </div>
+            <label className="toggle">
                 <input
                     type="checkbox"
                     checked={isEnabled}
                     onChange={(e) => sendState(e.target.checked)}
                 />
-                {isEnabled ? ' ON' : ' OFF'}
+                <span className="toggle-track">
+                    <span className="toggle-thumb" />
+                </span>
+                <span className="toggle-state">{isEnabled ? "ON" : "OFF"}</span>
             </label>
-        </>
-    )
-}
+        </div>
+    );
+};
 
 export default Switch;
