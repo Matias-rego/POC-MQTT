@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 
 interface Props {
     topic: string;
+    label?: string;
 }
 
-const Slider = ({ topic }: Props) => {
+const MAX = 255;
 
+const Slider = ({ topic, label }: Props) => {
     const [value, setValue] = useState(0);
     const { subscribe, unsubscribe, publish, connected } = useMqtt();
 
     useEffect(() => {
         const handler = (mensaje: string) => {
-
             setValue(Number(mensaje));
         };
 
@@ -23,27 +24,33 @@ const Slider = ({ topic }: Props) => {
         };
     }, [topic, connected, subscribe, unsubscribe]);
 
-    const sendValue = (value: string) => {
-        publish(`${topic}/value`, value);
+    const sendValue = (next: string) => {
+        setValue(Number(next));
+        publish(`${topic}/value`, next);
     };
 
+    const pct = (value / MAX) * 100;
+
     return (
-        <>
-            <label>
-                <input
-                    id="slider"
-                    type="range"
-                    min="0"
-                    max="255"
-                    step="1"
-                    value={value}
-                    onChange={(e) => sendValue(e.target.value)} // e.target.value siempre es un string
-                    style={{ width: '200px', marginTop: '10px' }}
-                />
-                {value}
-            </label>
-        </>
+        <div className="slider-block">
+            <div className="slider-top">
+                <span className="control-label">{label ?? topic}</span>
+                <span className="slider-value">{value}</span>
+            </div>
+            <input
+                className="range"
+                type="range"
+                min="0"
+                max={MAX}
+                step="1"
+                value={value}
+                onChange={(e) => sendValue(e.target.value)}
+                style={{
+                    background: `linear-gradient(90deg, var(--accent) ${pct}%, var(--surface-2) ${pct}%)`,
+                }}
+            />
+        </div>
     );
-}
+};
 
 export default Slider;
