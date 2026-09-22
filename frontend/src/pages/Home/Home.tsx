@@ -1,7 +1,11 @@
 import { useMqtt } from "@/hooks/useMqtt";
-import Switch from "@/components/ControlOutput/ControlOutput";
+import Switch from "@/components/Switch/Switch";
 import Slider from "@/components/Slider/Slider";
 import Graph from "@/components/Graph/Graph";
+import StatusCard from "@/components/StatusCard/StatusCard";
+import PushButton from "@/components/PushButton/PushButton";
+import ConsoleLog from "@/components/ConsoleLog/ConsoleLog";
+
 
 const Home = () => {
     const { connected } = useMqtt();
@@ -27,31 +31,40 @@ const Home = () => {
 
             <main className="dashboard">
                 <section className="card">
+                    <StatusCard name="Esp32:1 - Controlador" topic="esp1"/>
+                    <ConsoleLog topic="esp1"/>
+                </section>
+                <section className="card">
+                    <StatusCard name="Esp32:2 - Actuador" topic="esp2"/>
+                    <ConsoleLog topic="esp2"/>        
+                </section>                
+
+                <section className="card card--wide">
                     <div className="card-head">
                         <span className="card-icon">⚡</span>
-                        <h2>Actuadores</h2>
+                        <h2>Controles</h2>
                     </div>
-                    <Switch topic="switch1" label="Switch 1" />
-                    <Switch topic="switch2" label="Switch 2" />
-                    <Switch topic="switch3" label="Switch 3" />
+                    <PushButton topic="esp2/led_1" label="Led 1" command={{ on: "ON", off: "OFF" }} />
+                    <PushButton topic="esp2/led_2" label="Led 2" command={{ on: "TOGGLE", off: "" }} />
+                    <PushButton topic="esp2/led_3" label="Led 3" command={{ on: "NEXT", off: "" }} />
+                    <Switch topic="esp2/led_4_5" label="Switch 1" />
+                    <Slider topic="esp2/slider" label="Slider 1" min={0} max={100} />
                 </section>
 
                 <section className="card">
                     <div className="card-head">
-                        <span className="card-icon">🎚️</span>
-                        <h2>Controles</h2>
+                        <span className="card-icon">💧</span>
+                        <h2>Humedad</h2>
                     </div>
-                    <Slider topic="slider1" label="Slider 1" />
-                    <Slider topic="slider2" label="Slider 2" />
-                    <Slider topic="slider3" label="Slider 3" />
+                    <Graph topic="esp1/humidity" min={0} max={100} />
                 </section>
-
-                <section className="card card--wide">
+                
+                <section className="card">
                     <div className="card-head">
-                        <span className="card-icon">📈</span>
-                        <h2>Monitor en vivo — Slider 3</h2>
+                        <span className="card-icon">🌡️</span>
+                        <h2>Temperatura</h2>
                     </div>
-                    <Graph topic="slider3" />
+                    <Graph topic="esp1/temperature" min={0} max={50} />
                 </section>
             </main>
 

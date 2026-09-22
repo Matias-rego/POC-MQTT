@@ -207,6 +207,8 @@ h1, h2, h3 {
   font-family: var(--mono);
 }
 
+
+
 /* ---------- Toggle (Switch) ---------- */
 .toggle { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; }
 .toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -247,30 +249,47 @@ h1, h2, h3 {
 .toggle input:checked ~ .toggle-state { color: var(--accent); }
 
 /* ---------- Slider ---------- */
-.slider-block { padding: 14px 0; border-bottom: 1px solid var(--border-soft); }
-.slider-block:last-child { border-bottom: none; }
+.slider-block { 
+  padding: 14px 0; 
+  border-bottom: 1px solid var(--border-soft); 
+}
+
+.slider-block:last-child { 
+  border-bottom: none; 
+}
+
 .slider-top {
   display: flex;
-  align-items: baseline;
+  align-items: center; /* Alineación vertical centrada perfecta */
   justify-content: space-between;
   margin-bottom: 10px;
 }
+
+.control-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-1, #fff); /* Asegura contraste del título */
+}
+
 .slider-value {
   font-family: var(--mono);
   font-size: 15px;
   font-weight: 650;
   color: var(--accent-2);
 }
+
 input[type="range"].range {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
   height: 6px;
   border-radius: 999px;
-  background: var(--surface-2);
+  /* Se elimina 'background: var(--surface-2)' para permitir el gradiente dinámico de React */
   outline: none;
   cursor: pointer;
 }
+
+/* Manejador en Chrome / Edge / Safari */
 input[type="range"].range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -282,15 +301,25 @@ input[type="range"].range::-webkit-slider-thumb {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   transition: transform 0.1s ease;
 }
-input[type="range"].range::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+input[type="range"].range::-webkit-slider-thumb:hover { 
+  transform: scale(1.15); 
+}
+
+/* Manejador en Firefox */
 input[type="range"].range::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
   background: #fff;
   border: 3px solid var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s ease;
 }
 
+input[type="range"].range::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
 /* ---------- Graph card ---------- */
 .graph-wrap { width: 100%; height: 260px; }
 .graph-empty {
@@ -316,4 +345,110 @@ input[type="range"].range::-moz-range-thumb {
   background: var(--surface);
   padding: 2px 6px;
   border-radius: 6px;
+}
+
+
+/* ---------- Button (Tech Dark) ---------- */
+
+.control-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  min-width: 86px;
+  height: 38px;
+  padding: 0 14px;
+
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+
+  background: var(--surface-2);
+  color: var(--text-muted);
+
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px -8px rgba(0, 0, 0, 0.6);
+
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.12s ease;
+}
+
+/* Indicador circular */
+.button-indicator {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: var(--text-dim);
+
+  transition:
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+/* Hover */
+.control-button:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* Click */
+.control-button:active {
+  transform: scale(0.96);
+}
+
+.control-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.control-button:focus-visible {
+  outline: none;
+}
+
+
+/* ---------- Estado ON ---------- */
+
+.control-button.active {
+  background: var(--accent-soft);
+  border-color: rgba(124, 92, 255, 0.55);
+  color: var(--accent);
+  box-shadow:
+    0 0 0 1px rgba(124, 92, 255, 0.04),
+    0 4px 16px -10px var(--accent);
+}
+
+.control-button.active .button-indicator {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* ---------- Texto del botón ---------- */
+
+.button-text {
+  min-width: 24px;
+  text-align: center;
+}
+
+/*Status / Status-card */
+
+.img_status{
+    width: 22px;
+    height: 22px;
+}
+
+.status_box{
+    margin-left:auto;
 }

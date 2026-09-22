@@ -24,7 +24,7 @@ const Switch = ({ topic, label }: Props) => {
     }, [topic, connected, subscribe, unsubscribe]);
 
     const sendState = (state: boolean) => {
-        publish(`${topic}/state`, state ? "ON" : "OFF");
+        publish(`${topic}/command`, state ? "ON" : "OFF");
     };
 
     return (

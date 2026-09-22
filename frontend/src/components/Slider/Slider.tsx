@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 interface Props {
     topic: string;
     label?: string;
+    min?: number;
+    max?: number;
 }
 
-const MAX = 255;
 
-const Slider = ({ topic, label }: Props) => {
+const Slider = ({ topic, label, min = 0, max = 255 }: Props) => {
     const [value, setValue] = useState(0);
     const { subscribe, unsubscribe, publish, connected } = useMqtt();
 
@@ -17,19 +18,19 @@ const Slider = ({ topic, label }: Props) => {
             setValue(Number(mensaje));
         };
 
-        subscribe(`${topic}/value`, handler);
+        subscribe(`${topic}/state`, handler);
 
         return () => {
-            unsubscribe(`${topic}/value`, handler);
+            unsubscribe(`${topic}/state`, handler);
         };
     }, [topic, connected, subscribe, unsubscribe]);
 
     const sendValue = (next: string) => {
         setValue(Number(next));
-        publish(`${topic}/value`, next);
+        publish(`${topic}/command`, next);
     };
 
-    const pct = (value / MAX) * 100;
+    const pct = (value / (max - min)) * 100;
 
     return (
         <div className="slider-block">
@@ -40,13 +41,13 @@ const Slider = ({ topic, label }: Props) => {
             <input
                 className="range"
                 type="range"
-                min="0"
-                max={MAX}
+                min={min}
+                max={max}
                 step="1"
                 value={value}
                 onChange={(e) => sendValue(e.target.value)}
                 style={{
-                    background: `linear-gradient(90deg, var(--accent) ${pct}%, var(--surface-2) ${pct}%)`,
+                    background: `linear-gradient(90deg, var(--accent) ${pct}%, rgba(240, 239, 239, 0.2) ${pct}%)`,
                 }}
             />
         </div>

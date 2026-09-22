@@ -1,0 +1,68 @@
+.consoleWrapper {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #30363d;
+    background-color: #0d1117;
+}
+
+.consoleHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+}
+
+.consoleTitle {
+    color: #8b949e;
+    font-size: 0.75rem;
+    font-family: monospace;
+}
+
+.clearBtn {
+    background-color: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.clearBtn:hover {
+    background-color: #30363d;
+    color: #f0f6fc;
+}
+
+.consoleContainer {
+    color: #00ff66;
+    font-family: 'Fira Code', 'Courier New', Courier, monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding: 12px;
+    height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.consoleLine {
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.consoleLine::before {
+    content: ">> ";
+    color: #58a6ff;
+    font-weight: bold;
+}
+
+.consoleEmpty {
+    color: #8b949e;
+    font-style: italic;
+}
