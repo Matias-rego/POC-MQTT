@@ -12,6 +12,8 @@ import {
 
 interface Props {
   topic: string;
+  min?: number;
+  max?: number;
 }
 
 interface Point {
@@ -19,9 +21,9 @@ interface Point {
   value: number;
 }
 
-const WINDOW_MS = 30_000; // 30 segundos
+const WINDOW_MS = 300_000; // 30 segundos
 
-export default function Graph({ topic }: Props) {
+export default function Graph({ topic , min = 0 , max = 255}: Props) {
   const { subscribe, unsubscribe, connected } = useMqtt();
   const [data, setData] = useState<Point[]>([]);
 
@@ -41,10 +43,10 @@ export default function Graph({ topic }: Props) {
       });
     };
 
-    subscribe(`${topic}/value`, onMessage);
+    subscribe(`${topic}/state`, onMessage);
 
     return () => {
-      unsubscribe(`${topic}/value`, onMessage);
+      unsubscribe(`${topic}/state`, onMessage);
     };
   }, [topic, connected, subscribe, unsubscribe]);
 
@@ -52,7 +54,7 @@ export default function Graph({ topic }: Props) {
     return (
       <div className="graph-empty">
         <div style={{ fontSize: 26 }}>📉</div>
-        <div>Esperando datos de <code>{topic}/value</code>…</div>
+        <div>Esperando datos de <code>{topic}/state</code>…</div>
         <div style={{ color: "var(--text-dim)", fontSize: 12.5 }}>
           Movés el slider correspondiente y el gráfico se dibuja en vivo.
         </div>
@@ -81,7 +83,7 @@ export default function Graph({ topic }: Props) {
             tickFormatter={(value) => new Date(value).toLocaleTimeString()}
           />
           <YAxis
-            domain={[0, 255]}
+            domain={[min, max]}
             tick={{ fill: "#8a97ad", fontSize: 11 }}
             stroke="#273049"
           />
