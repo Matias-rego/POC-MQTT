@@ -1,6 +1,5 @@
 import Status from "../Status/Status";
 import esphome from "@/assets/esphome.svg"
-import ConsoleLog from "../ConsoleLog/ConsoleLog";
 
 interface StatusCardProps {
     name: string;

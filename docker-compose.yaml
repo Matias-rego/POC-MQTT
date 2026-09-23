@@ -1,5 +1,32 @@
 services:
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - poc-net
+    volumes:
+      - ./frontend:/app
+    environment:
+      - VITE_HOST=localhost
+      - VITE_PORT=5173
+      - VITE_MQTT_HOST=localhost
+      - VITE_MQTT_PORT=9001
+      - VITE_MQTT_USERNAME=admin
+      - VITE_MQTT_PASSWORD=123456
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+        reservations:
+          cpus: "0.1"
+          memory: 64M
+
   mqtt-dashboard:
     image: ghcr.io/jmischler72/mqtt-dashboard:latest
     container_name: mqtt-dashboard
@@ -19,6 +46,22 @@ services:
         reservations:
           cpus: "0.1"
           memory: 64M
+
+  esphome:
+    container_name: esphome
+    image: esphome-riscv
+    ports:
+      - "6052:6052"
+    build: 
+      context: ./esphome
+      dockerfile: Dockerfile
+    volumes:
+      - ./esphome/data/config:/config
+      - /dev:/dev
+    networks:
+      - poc-net
+    restart: unless-stopped
+    privileged: true
 
   mosquitto:
     image: eclipse-mosquitto:latest
